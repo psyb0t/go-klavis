@@ -3247,13 +3247,13 @@ type GoogleCalendarAttendee struct {
 // GoogleCalendarDataInput Complete Google Calendar sandbox data structure
 type GoogleCalendarDataInput struct {
 	// Events List of Google Calendar events
-	Events *[]SandboxSchemasGoogleCalendarGoogleCalendarEventInput `json:"events,omitempty"`
+	Events *[]GoogleCalendarEvent `json:"events,omitempty"`
 }
 
 // GoogleCalendarDataOutput Complete Google Calendar sandbox data structure
 type GoogleCalendarDataOutput struct {
 	// Events List of Google Calendar events
-	Events *[]SandboxSchemasGoogleCalendarGoogleCalendarEventOutput `json:"events,omitempty"`
+	Events *[]GoogleCalendarEvent `json:"events,omitempty"`
 }
 
 // GoogleCalendarEvent Google Calendar event object
@@ -3594,13 +3594,13 @@ type GoogleSheetsSpreadsheetOutput struct {
 // GoogleWorkspaceAtlasDataInput Complete Google workspace for MCP atlas sandbox data structure
 type GoogleWorkspaceAtlasDataInput struct {
 	// Events List of Google Calendar events
-	Events *[]GoogleCalendarEvent `json:"events,omitempty"`
+	Events *[]SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput `json:"events,omitempty"`
 }
 
 // GoogleWorkspaceAtlasDataOutput Complete Google workspace for MCP atlas sandbox data structure
 type GoogleWorkspaceAtlasDataOutput struct {
 	// Events List of Google Calendar events
-	Events *[]GoogleCalendarEvent `json:"events,omitempty"`
+	Events *[]SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput `json:"events,omitempty"`
 }
 
 // HTTPValidationError defines model for HTTPValidationError.
@@ -6377,8 +6377,8 @@ type YouTubePlaylistItem struct {
 	VideoId string `json:"video_id"`
 }
 
-// SandboxSchemasGoogleCalendarGoogleCalendarEventInput Google Calendar event object
-type SandboxSchemasGoogleCalendarGoogleCalendarEventInput struct {
+// SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput Google Calendar event object
+type SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput struct {
 	// Attendees List of event attendees
 	Attendees *[]GoogleCalendarAttendee `json:"attendees,omitempty"`
 
@@ -6413,8 +6413,8 @@ type SandboxSchemasGoogleCalendarGoogleCalendarEventInput struct {
 	Visibility *string `json:"visibility,omitempty"`
 }
 
-// SandboxSchemasGoogleCalendarGoogleCalendarEventOutput Google Calendar event object
-type SandboxSchemasGoogleCalendarGoogleCalendarEventOutput struct {
+// SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput Google Calendar event object
+type SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput struct {
 	// Attendees List of event attendees
 	Attendees *[]GoogleCalendarAttendee `json:"attendees,omitempty"`
 

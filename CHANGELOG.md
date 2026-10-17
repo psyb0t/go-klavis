@@ -2,6 +2,14 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v0.2.0, 2026-10-17
+
+- `GoogleWorkspaceAtlasDataInput.Events` and `GoogleWorkspaceAtlasDataOutput.Events` now hold `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput` and `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput` instead of `GoogleCalendarEvent`.
+- `GoogleCalendarDataInput.Events` and `GoogleCalendarDataOutput.Events` now hold `GoogleCalendarEvent` instead of `SandboxSchemasGoogleCalendarGoogleCalendarEventInput` and `SandboxSchemasGoogleCalendarGoogleCalendarEventOutput`.
+- `SandboxSchemasGoogleCalendarGoogleCalendarEventInput` and `SandboxSchemasGoogleCalendarGoogleCalendarEventOutput` are removed. Code that references them must switch to `GoogleCalendarEvent`.
+- `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput` and `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput` are added. They carry the struct body that `GoogleCalendarEvent` carried for the Google Workspace Atlas sandbox before this release.
+- oapi-codegen's name collision resolution assigned the plain `GoogleCalendarEvent` name to a different schema this run. The upstream spec version did not change, so this is a regeneration artifact, not an upstream API update.
+
 ## v0.1.1, 2026-10-17
 
 - `make sec` no longer fails on the generated client's free-form JSON fields. Semgrep's unsafe-deserialization-interface rule is skipped for the generated client only. It still runs on handwritten code, and every other rule still runs on the generated client.
