@@ -1,0 +1,8 @@
+{
+  "name": "go-klavis",
+  "description": "Unofficial Go client for the Klavis AI API: MCP servers, tool calls, Strata, user integrations, OAuth and sandboxes, generated from the spec Klavis AI publishes.",
+  "author": { "name": "psyb0t", "url": "https://github.com/psyb0t" },
+  "homepage": "https://github.com/psyb0t/go-klavis",
+  "license": "MIT",
+  "keywords": ["klavis", "mcp", "integrations", "api-client", "go-library", "openapi"]
+}
