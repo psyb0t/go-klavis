@@ -2,6 +2,12 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v0.2.2, 2026-10-17
+
+- Documentation only. The agent skill explains how to look up every endpoint, parameter and model with `go doc` or on pkg.go.dev, and declares its license.
+- The skill no longer lists the API credentials under OpenClaw's `requires.env`, which kept OpenClaw from loading it until they were set. It requires only `go`; the credentials are still documented as what your program reads.
+- The README points to the full API reference, and the examples in the README and the skill were checked against the current code.
+
 ## v0.2.1, 2026-10-17
 
 - Generated type names no longer flip between regenerations. The API publishes the same Google Calendar event model under a plain and a module-qualified name, and which module gets the plain name changes between responses. The spec patch now merges the identical copies, so `GoogleCalendarDataInput`, `GoogleCalendarDataOutput`, `GoogleWorkspaceAtlasDataInput` and `GoogleWorkspaceAtlasDataOutput` all use `GoogleCalendarEvent` for `Events`.

@@ -60,6 +60,8 @@ func main() {
 
 The same code is in `example_test.go`, so `make test` checks that it compiles.
 
+The full API, with the spec's descriptions as doc comments, is in the [Go reference](https://pkg.go.dev/github.com/psyb0t/go-klavis) and in `go doc github.com/psyb0t/go-klavis`.
+
 The client covers all 203 paths and 212 operations: MCP servers and instances, tool calls, Strata, user integrations, OAuth, white labeling, sandboxes and universes. Method names come from the spec's operation IDs, including the longer names on sandbox and Strata endpoints.
 
 ## Auth

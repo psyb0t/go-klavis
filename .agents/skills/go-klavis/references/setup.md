@@ -40,7 +40,7 @@ This fragment uses `context`, `net/http`, `os` and `github.com/psyb0t/go-klavis`
 
 - `klavis.NewClientWithResponses(server, opts...)`. Options: `klavis.WithRequestEditorFn`, `klavis.WithHTTPClient` (your own `*http.Client`, for timeouts), `klavis.WithBaseURL`.
 - Each operation has `Client.X` (raw `*http.Response`), `ClientWithResponses.XWithResponse` (parsed) and `NewXRequest` (request only). JSON body operations also accept the typed request body; raw-body variants have `WithBody` in their names.
-- The package covers all 203 paths and 212 operations. The table below lists common operations; check `client.gen.go` for the full set and exact signatures.
+- The package covers all 203 paths and 212 operations. The table below lists common operations; run `go doc github.com/psyb0t/go-klavis ClientWithResponsesInterface` for the full set and exact signatures.
 
 ## Operations
 
