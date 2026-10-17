@@ -2,6 +2,13 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v0.2.1, 2026-10-17
+
+- Generated type names no longer flip between regenerations. The API publishes the same Google Calendar event model under a plain and a module-qualified name, and which module gets the plain name changes between responses. The spec patch now merges the identical copies, so `GoogleCalendarDataInput`, `GoogleCalendarDataOutput`, `GoogleWorkspaceAtlasDataInput` and `GoogleWorkspaceAtlasDataOutput` all use `GoogleCalendarEvent` for `Events`.
+- `SandboxSchemasGoogleCalendarGoogleCalendarEventInput`, `SandboxSchemasGoogleCalendarGoogleCalendarEventOutput`, `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput` and `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput` remain as deprecated aliases of `GoogleCalendarEvent`, so code written against v0.1.x and v0.2.0 still compiles.
+- Generated doc comments keep the API's own description text. The spec patch no longer rewrites dashes or wording in descriptions.
+- `make sec` uses Semgrep 1.181.0. Its pinned requirements now hash every published file, so the development image also builds on arm64.
+
 ## v0.2.0, 2026-10-17
 
 - `GoogleWorkspaceAtlasDataInput.Events` and `GoogleWorkspaceAtlasDataOutput.Events` now hold `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput` and `SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput` instead of `GoogleCalendarEvent`.

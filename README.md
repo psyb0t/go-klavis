@@ -86,7 +86,7 @@ make generate
 `gen.go` declares the steps, so `make generate` is just `go generate ./...`:
 
 - `scripts/fetch-spec.sh` downloads `https://api.klavis.ai/openapi.json` to `api/openapi.json`.
-- `scripts/patch-spec.sh` writes `api/openapi.fixed.json`, replacing dash punctuation and first-person plural wording in descriptions emitted as Go comments. Schema constraints, examples, defaults, enum values and operations stay unchanged.
+- `scripts/patch-spec.sh` writes `api/openapi.fixed.json`, merging identical schemas the API publishes under module-qualified names (`sandbox__schemas__<module>__<Name>`) into one schema under the plain name. The API changes which copy gets the plain name between responses, so without the merge the generated type names would flip. The patch fails when the copies differ.
 - oapi-codegen reads the OpenAPI 3.1 document with `config.yaml`. No schema downconversion is needed.
 - The config maps unformatted `number` fields to `float64`, resolves type name collisions and prefixes enum values to avoid duplicate Go identifiers.
 

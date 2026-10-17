@@ -1,7 +1,11 @@
 #!/bin/bash
-# Normalize provider descriptions emitted as Go comments to repository style.
-# Replace dash punctuation and the first-person plural sandbox note. Keep
-# schema constraints, examples, defaults, enum values and operations unchanged.
+# Merges module-qualified duplicate schemas into one schema under the plain
+# name. The API serves two models with the same class name from different
+# modules, and which one keeps the plain name (and which gets a
+# sandbox__schemas__<module>__ prefix, split into -Input and -Output) changes
+# between responses with no spec version change. That flips the generated Go
+# type names. The duplicates are identical, so every reference now points at
+# the plain name. The patch fails when the duplicates ever differ.
 set -euo pipefail
 trap 'on_error "$?" "$LINENO"' ERR
 
@@ -35,22 +39,29 @@ log() {
 		'{time:$time,level:$level,file:$file,line:($line|tonumber),func:$func,msg:$msg}' >&2
 }
 
-readonly PROSE_FILTER='
-def prose:
-  gsub("[ \t]*[\u2013\u2014][ \t]*"; ", ")
-  | sub("we typically work with"; "typically use");
-def normalize:
-  if type == "object" then
-    with_entries(
-      if .key == "example" or .key == "examples" or .key == "default"
-        or .key == "enum" or .key == "const" then .
-      elif (.key == "description" or .key == "summary")
-        and (.value | type == "string") then .value |= prose
-      else .value |= normalize end
-    )
-  elif type == "array" then map(normalize)
-  else . end;
-normalize
+# shellcheck disable=SC2016 # jq variables, not shell expansions
+readonly MERGE_FILTER='
+def base: sub("^.*__"; "") | sub("-(Input|Output)$"; "");
+(.components.schemas | keys | map(select(test("__")) | base) | unique) as $bases
+| reduce $bases[] as $name (.;
+    [.components.schemas | to_entries[]
+      | select((.key | base) == $name and (.key == $name or (.key | test("__"))))]
+      as $group
+    | if ($group | map(.value) | unique | length) != 1 then
+        error("schemas named \($name) differ; review the merge patch")
+      else . end
+    | ($group | map("#/components/schemas/" + .key)) as $refs
+    | .components.schemas |= (
+        with_entries(select(.key as $k | $group | map(.key) | index($k) | not))
+        + {($name): $group[0].value}
+      )
+    | walk(
+        if type == "object" and (.["$ref"]? | type == "string")
+          and (.["$ref"] as $r | $refs | index($r)) then
+          .["$ref"] = "#/components/schemas/" + $name
+        else . end
+      )
+  )
 '
 
 main() {
@@ -64,10 +75,10 @@ main() {
 	# shellcheck disable=SC2064 # expand tmp before the local leaves scope
 	trap "rm -f -- '${tmp}'" EXIT
 
-	jq "$PROSE_FILTER" "$SOURCE_SPEC" >"$tmp"
+	jq "$MERGE_FILTER" "$SOURCE_SPEC" >"$tmp"
 	chmod 0644 "$tmp"
 	mv -- "$tmp" "$OUTPUT_SPEC"
-	log INFO "normalized description prose, retained OpenAPI 3.1 schemas"
+	log INFO "merged module-qualified duplicate schemas"
 }
 
 main "$@"

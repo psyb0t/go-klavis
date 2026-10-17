@@ -1260,7 +1260,7 @@ type Address struct {
 // - Tables contain Fields (schema) and Records (data)
 // - Records contain field values
 //
-// Note: For sandbox purposes, typically use a single base
+// Note: For sandbox purposes, we typically work with a single base
 // and multiple tables within it.
 type AirtableDataInput struct {
 	// Tables List of tables (simplified, assumes single base)
@@ -2821,7 +2821,7 @@ type DumpSandboxResponseYouTubeData struct {
 	ServerName SandboxMCPServer `json:"server_name"`
 }
 
-// DumpUrlResponse Response for the dump endpoint, returns a signed download URL.
+// DumpUrlResponse Response for the dump endpoint — returns a signed download URL.
 type DumpUrlResponse struct {
 	// DownloadUrl Signed GCS URL to GET the tar.gz archive from
 	DownloadUrl string `json:"download_url"`
@@ -3594,13 +3594,13 @@ type GoogleSheetsSpreadsheetOutput struct {
 // GoogleWorkspaceAtlasDataInput Complete Google workspace for MCP atlas sandbox data structure
 type GoogleWorkspaceAtlasDataInput struct {
 	// Events List of Google Calendar events
-	Events *[]SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput `json:"events,omitempty"`
+	Events *[]GoogleCalendarEvent `json:"events,omitempty"`
 }
 
 // GoogleWorkspaceAtlasDataOutput Complete Google workspace for MCP atlas sandbox data structure
 type GoogleWorkspaceAtlasDataOutput struct {
 	// Events List of Google Calendar events
-	Events *[]SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput `json:"events,omitempty"`
+	Events *[]GoogleCalendarEvent `json:"events,omitempty"`
 }
 
 // HTTPValidationError defines model for HTTPValidationError.
@@ -6377,78 +6377,6 @@ type YouTubePlaylistItem struct {
 	VideoId string `json:"video_id"`
 }
 
-// SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput Google Calendar event object
-type SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventInput struct {
-	// Attendees List of event attendees
-	Attendees *[]GoogleCalendarAttendee `json:"attendees,omitempty"`
-
-	// Description Event description
-	Description *string `json:"description,omitempty"`
-
-	// EndDate All-day event end date in YYYY-MM-DD format
-	EndDate *string `json:"endDate,omitempty"`
-
-	// EndTime RFC3339 timestamp for timed events
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Location Event location
-	Location *string `json:"location,omitempty"`
-
-	// Recurrence Recurrence rules (RRULE format)
-	Recurrence *[]string `json:"recurrence,omitempty"`
-
-	// StartDate All-day event start date in YYYY-MM-DD format
-	StartDate *string `json:"startDate,omitempty"`
-
-	// StartTime RFC3339 timestamp for timed events (e.g., 2025-12-01T09:00:00-07:00)
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Timezone IANA timezone (e.g., America/Los_Angeles)
-	Timezone *string `json:"timezone,omitempty"`
-
-	// Title Event title/summary (required)
-	Title string `json:"title"`
-
-	// Visibility Visibility (default, public, private, confidential)
-	Visibility *string `json:"visibility,omitempty"`
-}
-
-// SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput Google Calendar event object
-type SandboxSchemasGoogleWorkspaceAtlasGoogleCalendarEventOutput struct {
-	// Attendees List of event attendees
-	Attendees *[]GoogleCalendarAttendee `json:"attendees,omitempty"`
-
-	// Description Event description
-	Description *string `json:"description,omitempty"`
-
-	// EndDate All-day event end date in YYYY-MM-DD format
-	EndDate *string `json:"endDate,omitempty"`
-
-	// EndTime RFC3339 timestamp for timed events
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Location Event location
-	Location *string `json:"location,omitempty"`
-
-	// Recurrence Recurrence rules (RRULE format)
-	Recurrence *[]string `json:"recurrence,omitempty"`
-
-	// StartDate All-day event start date in YYYY-MM-DD format
-	StartDate *string `json:"startDate,omitempty"`
-
-	// StartTime RFC3339 timestamp for timed events (e.g., 2025-12-01T09:00:00-07:00)
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Timezone IANA timezone (e.g., America/Los_Angeles)
-	Timezone *string `json:"timezone,omitempty"`
-
-	// Title Event title/summary (required)
-	Title string `json:"title"`
-
-	// Visibility Visibility (default, public, private, confidential)
-	Visibility *string `json:"visibility,omitempty"`
-}
-
 // InitializeSandboxLocalSandboxCanvasSandboxIdInitializePostJSONBody defines parameters for InitializeSandboxLocalSandboxCanvasSandboxIdInitializePost.
 type InitializeSandboxLocalSandboxCanvasSandboxIdInitializePostJSONBody = CanvasDataInput
 
@@ -8919,7 +8847,7 @@ type ClientInterface interface {
 
 	// AcquireLocalSandboxLocalSandboxPostWithBody Acquire a local sandbox
 	//
-	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -8928,7 +8856,7 @@ type ClientInterface interface {
 
 	// AcquireLocalSandboxLocalSandboxPost Acquire a local sandbox
 	//
-	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -9033,7 +8961,7 @@ type ClientInterface interface {
 
 	// ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePostWithBody Execute a script inside the sandbox
 	//
-	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -9042,7 +8970,7 @@ type ClientInterface interface {
 
 	// ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePost Execute a script inside the sandbox
 	//
-	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -11199,7 +11127,7 @@ type ClientInterface interface {
 
 	// CreateSandboxSandboxServerNamePostWithBody Acquire a sandbox
 	//
-	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 	//
 	// Takes any type of body and a specified content type.
 	//
@@ -11208,7 +11136,7 @@ type ClientInterface interface {
 
 	// CreateSandboxSandboxServerNamePost Acquire a sandbox
 	//
-	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -11401,7 +11329,7 @@ func (c *Client) ListLocalSandboxesLocalSandboxGet(ctx context.Context, reqEdito
 
 // AcquireLocalSandboxLocalSandboxPostWithBody Acquire a local sandbox
 //
-// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 //
 // Takes any type of body and a specified content type.
 //
@@ -11420,7 +11348,7 @@ func (c *Client) AcquireLocalSandboxLocalSandboxPostWithBody(ctx context.Context
 
 // AcquireLocalSandboxLocalSandboxPost Acquire a local sandbox
 //
-// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -11655,7 +11583,7 @@ func (c *Client) DumpLocalSandboxLocalSandboxLocalSandboxIdDumpGet(ctx context.C
 
 // ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePostWithBody Execute a script inside the sandbox
 //
-// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 //
 // Takes any type of body and a specified content type.
 //
@@ -11674,7 +11602,7 @@ func (c *Client) ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePostWithBody(c
 
 // ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePost Execute a script inside the sandbox
 //
-// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -16181,7 +16109,7 @@ func (c *Client) InitializeSandboxSandboxYoutubeSandboxIdInitializePost(ctx cont
 
 // CreateSandboxSandboxServerNamePostWithBody Acquire a sandbox
 //
-// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 //
 // Takes any type of body and a specified content type.
 //
@@ -16200,7 +16128,7 @@ func (c *Client) CreateSandboxSandboxServerNamePostWithBody(ctx context.Context,
 
 // CreateSandboxSandboxServerNamePost Acquire a sandbox
 //
-// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -29494,7 +29422,7 @@ type ClientWithResponsesInterface interface {
 
 	// AcquireLocalSandboxLocalSandboxPostWithBodyWithResponse Acquire a local sandbox
 	//
-	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -29503,7 +29431,7 @@ type ClientWithResponsesInterface interface {
 
 	// AcquireLocalSandboxLocalSandboxPostWithResponse Acquire a local sandbox
 	//
-	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+	// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -29620,7 +29548,7 @@ type ClientWithResponsesInterface interface {
 
 	// ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePostWithBodyWithResponse Execute a script inside the sandbox
 	//
-	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -29629,7 +29557,7 @@ type ClientWithResponsesInterface interface {
 
 	// ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePostWithResponse Execute a script inside the sandbox
 	//
-	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+	// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32042,7 +31970,7 @@ type ClientWithResponsesInterface interface {
 
 	// CreateSandboxSandboxServerNamePostWithBodyWithResponse Acquire a sandbox
 	//
-	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -32051,7 +31979,7 @@ type ClientWithResponsesInterface interface {
 
 	// CreateSandboxSandboxServerNamePostWithResponse Acquire a sandbox
 	//
-	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+	// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -42457,7 +42385,7 @@ func (c *ClientWithResponses) ListLocalSandboxesLocalSandboxGetWithResponse(ctx 
 
 // AcquireLocalSandboxLocalSandboxPostWithBodyWithResponse Acquire a local sandbox
 //
-// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -42472,7 +42400,7 @@ func (c *ClientWithResponses) AcquireLocalSandboxLocalSandboxPostWithBodyWithRes
 
 // AcquireLocalSandboxLocalSandboxPostWithResponse Acquire a local sandbox
 //
-// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself, some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
+// Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -42667,7 +42595,7 @@ func (c *ClientWithResponses) DumpLocalSandboxLocalSandboxLocalSandboxIdDumpGetW
 
 // ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePostWithBodyWithResponse Execute a script inside the sandbox
 //
-// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -42682,7 +42610,7 @@ func (c *ClientWithResponses) ExecuteInSandboxLocalSandboxLocalSandboxIdExecuteP
 
 // ExecuteInSandboxLocalSandboxLocalSandboxIdExecutePostWithResponse Execute a script inside the sandbox
 //
-// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background, poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+// Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -46505,7 +46433,7 @@ func (c *ClientWithResponses) InitializeSandboxSandboxYoutubeSandboxIdInitialize
 
 // CreateSandboxSandboxServerNamePostWithBodyWithResponse Acquire a sandbox
 //
-// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -46520,7 +46448,7 @@ func (c *ClientWithResponses) CreateSandboxSandboxServerNamePostWithBodyWithResp
 
 // CreateSandboxSandboxServerNamePostWithResponse Acquire a sandbox
 //
-// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself, some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
+// Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data for supported servers like Airtable, Notion, Slack, MongoDB) AND (2) the MCP server implementation itself — some servers are routed to a benchmark-specific MCP server URL (e.g., GitHub, Notion, Google Sheets). You may also specify a test_account_email to acquire a specific test account.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
