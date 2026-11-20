@@ -2,6 +2,16 @@
 
 All notable changes per release. Versions follow [semver](https://semver.org).
 
+## v0.3.0, 2026-11-20
+
+- Breaking: the upstream API moved sandbox operations to `/v1/...` paths and the client was regenerated against it. Every old sandbox, local sandbox and universe method is removed from `Client`, `ClientWithResponses` and both interfaces, including `CreateSandboxSandboxServerNamePost`, `GetSandboxSandboxServerNameSandboxIdGet`, `ListSandboxesSandboxGet`, `PrepareSandboxCapacitySandboxPreparePost`, the `AcquireLocalSandbox...` and `...LocalSandbox...` methods, the `AcquireUniverse...` and `...Universes...` methods, and every per-service `InitializeSandbox...` and `DumpSandbox...` method.
+- New methods, each with a `WithBody` and `WithResponse` variant where the operation has a body: `CreateSandboxV1SandboxesPost`, `ListSandboxesV1SandboxesGet`, `GetSandboxV1SandboxesSandboxIdGet`, `UpdateSandboxV1SandboxesSandboxIdPatch`, `DeleteSandboxV1SandboxesSandboxIdDelete`, `ResetSandboxV1SandboxesSandboxIdResetPost`, `PrepareV1PreparePost` and `UsageV1UsageGet`.
+- New sandbox methods: `ExecCommandV1SandboxesSandboxIdExecPost`, `RunActionsV1SandboxesSandboxIdActionsPost`, `GetFileV1SandboxesSandboxIdFilesGet`, `PutFileV1SandboxesSandboxIdFilesPutWithBody`, `ScreenshotV1SandboxesSandboxIdScreenshotGet`, `AccessibilityTreeV1SandboxesSandboxIdAccessibilityTreeGet`, `SandboxAudioV1SandboxesSandboxIdAudioGet`, `VncConnectionV1SandboxesSandboxIdVncGet`, `SandboxTrajectoryV1SandboxesSandboxIdTrajectoryGet` and `SandboxTrajectoryScreenshotV1SandboxesSandboxIdTrajectoryScreenshotsEntryIdGet`.
+- Generated types and enums were renamed with the spec. For example `AcquireLocalSandboxRequestServerNames1`, `AttendeeResponseStatus` and `BenchmarkEnum` are gone, and `AccessibilityTreeFormat`, `ActionResultStatus` and `ClickActionButton` are new. Callers must update type names.
+- Removed `aliases.go`. The four deprecated `SandboxSchemas...GoogleCalendarEvent...` aliases are gone because upstream no longer serves `GoogleCalendarEvent`.
+- `scripts/patch-spec.sh` moves the spec's inline `$defs` entries (such as `FileEntry`) into `components.schemas` and rewrites the `#/$defs/...` references, so oapi-codegen can resolve them. It fails when a moved name collides with a different schema.
+- Raised the minimum Go version in `go.mod` and the development image from 1.26.10 to 1.26.11, which fixes the `net/http` vulnerability GO-2026-6859 found by govulncheck.
+
 ## v0.2.5, 2026-11-05
 
 - Development image package installation uses HTTPS and bounded retries for signed snapshot indexes and package downloads.

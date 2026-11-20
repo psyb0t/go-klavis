@@ -5,7 +5,8 @@
 # sandbox__schemas__<module>__ prefix, split into -Input and -Output) changes
 # between responses with no spec version change. That flips the generated Go
 # type names. The duplicates are identical, so every reference now points at
-# the plain name. The patch fails when the duplicates ever differ.
+# the plain name. The patch fails when the duplicates ever differ. Inline
+# $defs blocks, which oapi-codegen cannot resolve, move into components.
 set -euo pipefail
 trap 'on_error "$?" "$LINENO"' ERR
 
@@ -38,6 +39,24 @@ log() {
 		--arg msg "$*" \
 		'{time:$time,level:$level,file:$file,line:($line|tonumber),func:$func,msg:$msg}' >&2
 }
+
+HOIST_FILTER=$(
+	cat <<'JQ'
+[.. | objects | select(has("$defs")) | .["$defs"] | to_entries[]] as $defs
+| reduce $defs[] as $d (.;
+    if (.components.schemas | has($d.key)) and .components.schemas[$d.key] != $d.value then
+      error("$defs entry \($d.key) collides with a different schema; review the hoist patch")
+    else .components.schemas[$d.key] = $d.value end
+  )
+| walk(
+    if type == "object" and has("$defs") then del(.["$defs"])
+    elif type == "string" and startswith("#/$defs/") then
+      "#/components/schemas/" + ltrimstr("#/$defs/")
+    else . end
+  )
+JQ
+)
+readonly HOIST_FILTER
 
 # shellcheck disable=SC2016 # jq variables, not shell expansions
 readonly MERGE_FILTER='
@@ -75,10 +94,10 @@ main() {
 	# shellcheck disable=SC2064 # expand tmp before the local leaves scope
 	trap "rm -f -- '${tmp}'" EXIT
 
-	jq "$MERGE_FILTER" "$SOURCE_SPEC" >"$tmp"
+	jq "$HOIST_FILTER" "$SOURCE_SPEC" | jq "$MERGE_FILTER" >"$tmp"
 	chmod 0644 "$tmp"
 	mv -- "$tmp" "$OUTPUT_SPEC"
-	log INFO "merged module-qualified duplicate schemas"
+	log INFO "hoisted inline defs and merged module-qualified duplicate schemas"
 }
 
 main "$@"
